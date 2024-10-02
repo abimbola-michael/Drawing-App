@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:drawingapp/features/drawing/widgets/drawing_painter.dart';
-import 'package:drawingapp/features/home/models/drawing.dart';
+import 'package:drawingapp/features/drawing/models/drawing.dart';
 import 'package:drawingapp/features/shared/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;

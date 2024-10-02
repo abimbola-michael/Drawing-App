@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: HomePage.route,
       routes: {
         HomePage.route: (_) => const HomePage(),
-        DrawingPage.route: (_) => const DrawingPage()
+        DrawingPage.route: (_) => const DrawingPage(),
       },
     );
   }

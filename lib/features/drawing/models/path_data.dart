@@ -9,6 +9,7 @@ class PathData {
   int thickness;
   List<double> startPoint;
   List<List<double>> pathPoints;
+  Path? currentPath;
   PathData({
     required this.color,
     required this.thickness,

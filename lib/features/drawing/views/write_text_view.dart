@@ -1,5 +1,6 @@
 import 'package:drawingapp/features/drawing/models/drawing_data.dart';
 import 'package:drawingapp/features/drawing/models/text_data.dart';
+import 'package:drawingapp/features/drawing/widgets/drawing_picker.dart';
 import 'package:drawingapp/features/drawing/widgets/font_picker.dart';
 import 'package:drawingapp/features/shared/extensions/extensions.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _WriteTextViewState extends State<WriteTextView> {
   Color currentColor = Colors.white;
   Color currentBackgroundColor = Colors.transparent;
   bool changed = false;
+  FocusNode focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
@@ -96,102 +98,96 @@ class _WriteTextViewState extends State<WriteTextView> {
     widget.onClose();
   }
 
+  void requestFocus() {
+    focusNode.requestFocus();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.black.withOpacity(0.3),
-      child: Stack(
-        children: [
-          Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: currentBackgroundColor,
-              ),
-              child: IntrinsicWidth(
-                child: TextField(
-                  controller: controller,
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: currentFont,
-                      color: currentColor),
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    isCollapsed: true,
-                    hintText: "",
-                    hintStyle: TextStyle(
-                      fontSize: 20,
-                      fontFamily: currentFont,
-                      color: currentColor.withOpacity(0.5),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: requestFocus,
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.black.withOpacity(0.3),
+        child: Stack(
+          children: [
+            Center(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: currentBackgroundColor,
+                ),
+                child: IntrinsicWidth(
+                  child: TextField(
+                    focusNode: focusNode,
+                    controller: controller,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: currentFont,
+                        color: currentColor),
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      isCollapsed: true,
+                      hintText: "",
+                      hintStyle: TextStyle(
+                        fontSize: 20,
+                        fontFamily: currentFont,
+                        color: currentColor.withOpacity(0.5),
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
                     ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                    // border: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(20),
-                    //   borderSide:
-                    //       const BorderSide(width: 0, color: Colors.transparent),
-                    // ),
-                    // enabledBorder: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(20),
-                    //   borderSide:
-                    //       const BorderSide(width: 0, color: Colors.transparent),
-                    // ),
-                    // focusedBorder: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(20),
-                    //   borderSide:
-                    //       const BorderSide(width: 0, color: Colors.transparent),
-                    // ),
-                    // //contentPadding: const EdgeInsets.all(10),
-                    // filled: true,
-                    // fillColor: currentBackgroundColor,
+                    textAlign: TextAlign.center,
+                    textAlignVertical: TextAlignVertical.center,
+                    cursorColor: currentColor == Colors.white
+                        ? Colors.black
+                        : Colors.white,
                   ),
-                  textAlign: TextAlign.center,
-                  textAlignVertical: TextAlignVertical.center,
-                  cursorColor: Colors.white,
                 ),
               ),
             ),
-          ),
-          DrawingAppBar(
-            title: "Write",
-            isEdit: widget.drawingData != null,
-            onClose: widget.onClose,
-            onDone: updateDrawingData,
-            onDelete: widget.onDelete,
-            hasDrawingData: true,
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // SizePicker(
-                //   maxSize: 10,
-                //   selectedSize: currentThickness,
-                //   onSelect: updateThickness,
-                //   title: "Font Size",
-                // ),
-                ColorPicker(
-                  colorType: "Text",
-                  selectedColor: currentColor,
-                  onSelect: updateColor,
-                ),
-                ColorPicker(
-                  colorType: "Background",
-                  selectedColor: currentBackgroundColor,
-                  onSelect: updateBackgroundColor,
-                ),
-                FontPicker(selectedFont: currentFont, onSelect: updateFont)
-              ],
+            DrawingAppBar(
+              title: "Write",
+              isEdit: widget.drawingData != null,
+              onClose: widget.onClose,
+              onDone: updateDrawingData,
+              onDelete: widget.onDelete,
+              hasDrawingData: true,
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: DrawingPicker(
+                labels: const ["Text Color", "Background Color", "Font"],
+                children: [
+                  // SizePicker(
+                  //   maxSize: 10,
+                  //   selectedSize: currentThickness,
+                  //   onSelect: updateThickness,
+                  //   title: "Font Size",
+                  // ),
+                  ColorPicker(
+                    colorType: "Text",
+                    selectedColor: currentColor,
+                    onSelect: updateColor,
+                  ),
+                  ColorPicker(
+                    colorType: "Background",
+                    selectedColor: currentBackgroundColor,
+                    onSelect: updateBackgroundColor,
+                  ),
+                  FontPicker(selectedFont: currentFont, onSelect: updateFont)
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

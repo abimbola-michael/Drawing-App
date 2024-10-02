@@ -10,7 +10,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../drawing/utils/image_save_utils.dart';
-import '../models/drawing.dart';
+import '../../drawing/models/drawing.dart';
 
 class HomePage extends ConsumerWidget {
   static const route = "/home";
@@ -23,7 +23,8 @@ class HomePage extends ConsumerWidget {
       Drawing drawing) async {
     switch (action) {
       case "Rename":
-        final newName = await context.showNameDrawingDialog(drawing: drawing);
+        final newName =
+            await context.showNameEditingDialog(prevName: drawing.name);
         if (newName == null) {
           return;
         }
@@ -72,17 +73,27 @@ class HomePage extends ConsumerWidget {
         .pushNamed(DrawingPage.route, arguments: {"drawing": drawing});
   }
 
+  void gotoWritingPage(BuildContext context, {Drawing? drawing}) {
+    Navigator.of(context)
+        .pushNamed(DrawingPage.route, arguments: {"drawing": drawing});
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final drawings = ref.watch(drawingListProvider);
     drawings.sort((a, b) => b.timeModified.compareTo(a.timeModified));
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Drawing App",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ),
+          title: const Text(
+            "Drawing App",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => gotoWritingPage(context),
+              icon: const Icon(OctIcons.pencil),
+            )
+          ]),
       body: drawings.isEmpty
           ? const Center(
               child: Text(

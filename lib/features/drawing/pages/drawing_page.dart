@@ -9,7 +9,7 @@ import 'package:drawingapp/features/drawing/views/select_background_color_view.d
 import 'package:drawingapp/features/drawing/views/select_background_image_view.dart';
 import 'package:drawingapp/features/drawing/views/write_text_view.dart';
 import 'package:drawingapp/features/home/dialogs/name_drawing_dialog.dart';
-import 'package:drawingapp/features/home/models/drawing.dart';
+import 'package:drawingapp/features/drawing/models/drawing.dart';
 import 'package:drawingapp/features/home/providers/drawing_list_provider.dart';
 import 'package:drawingapp/features/shared/colors.dart';
 import 'package:drawingapp/features/shared/extensions/extensions.dart';
@@ -79,6 +79,8 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
   }
 
   void updateBackgroundColor(Color color) {
+    backgroundImage = null;
+    backgroundImagePath = null;
     backgroundColor = color;
     setState(() {});
   }
@@ -154,6 +156,10 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
 
   void addNewDrawingDatas(List<DrawingData> newDrawingDatas) {
     // adding the drawing datas from the drawing or text view
+    if (newDrawingDatas.isNotEmpty) {
+      currentColor = newDrawingDatas.last.pathData!.color;
+      currentThickness = newDrawingDatas.last.pathData!.thickness;
+    }
     drawingDatas.addAll(newDrawingDatas);
     setState(() {});
   }
@@ -211,8 +217,12 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
           backgroundImagePath: backgroundImagePath,
           drawingDatas: drawingDatas);
     }
+    if (backgroundImagePath == null) {
+      newDrawing.backgroundImagePath = null;
+    }
     if (newDrawing.name.isEmpty) {
-      final name = await context.showNameDrawingDialog(drawing: newDrawing);
+      final name =
+          await context.showNameEditingDialog(prevName: newDrawing.name);
       if (name == null) {
         // if (!mounted) return;
         // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -363,12 +373,6 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
               ),
               size: Size(context.width, context.height),
             ),
-            GestureView(
-              drawingDatas: drawingDatas,
-              onStartGesture: updateGestureStarted,
-              onEndGesture: updateGestureEnded,
-              onTap: editText,
-            ),
             if (drawingMode == DrawingMode.path)
               DrawingView(
                 currentColor: currentColor,
@@ -395,6 +399,13 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
                 onClose: closeView,
                 onImageChanged: updateBackgroundImage,
               )
+            else
+              TranslateRotateScaleView(
+                drawingDatas: drawingDatas,
+                onStartGesture: updateGestureStarted,
+                onEndGesture: updateGestureEnded,
+                onTap: editText,
+              ),
           ],
         ),
         bottomNavigationBar: drawingMode != null

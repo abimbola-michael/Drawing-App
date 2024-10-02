@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:drawingapp/features/home/models/drawing.dart';
+import 'package:drawingapp/features/drawing/models/drawing.dart';
 import 'package:drawingapp/features/shared/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

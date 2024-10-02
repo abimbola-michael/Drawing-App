@@ -1,12 +1,12 @@
 import 'package:drawingapp/features/drawing/widgets/dialog_button.dart';
-import 'package:drawingapp/features/home/models/drawing.dart';
+import 'package:drawingapp/features/drawing/models/drawing.dart';
 import 'package:drawingapp/features/home/providers/drawing_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class NameDrawingDialog extends ConsumerStatefulWidget {
-  final Drawing drawing;
-  const NameDrawingDialog({super.key, required this.drawing});
+  final String prevName;
+  const NameDrawingDialog({super.key, required this.prevName});
 
   @override
   ConsumerState<NameDrawingDialog> createState() => _NameDrawingDialogState();
@@ -14,7 +14,7 @@ class NameDrawingDialog extends ConsumerStatefulWidget {
 
 class _NameDrawingDialogState extends ConsumerState<NameDrawingDialog> {
   final GlobalKey<FormState> formKey = GlobalKey();
-  late final controller = TextEditingController(text: widget.drawing.name);
+  late final controller = TextEditingController(text: widget.prevName);
   @override
   void dispose() {
     controller.dispose();
@@ -101,7 +101,7 @@ class _NameDrawingDialogState extends ConsumerState<NameDrawingDialog> {
 }
 
 extension DialogExtension on BuildContext {
-  Future showNameDrawingDialog({required Drawing drawing}) {
+  Future showNameEditingDialog({required String prevName}) {
     return showDialog(
         context: this,
         builder: (context) {
@@ -110,7 +110,7 @@ extension DialogExtension on BuildContext {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
-            child: NameDrawingDialog(drawing: drawing),
+            child: NameDrawingDialog(prevName: prevName),
           );
         });
   }

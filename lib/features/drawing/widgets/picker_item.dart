@@ -14,19 +14,19 @@ class PickerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4),
-      color: Colors.black.withOpacity(0.1),
+      //color: Colors.black.withOpacity(0.1),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.white,
-            ),
-            maxLines: 1,
-          ),
-          const SizedBox(height: 8),
+          // Text(
+          //   title,
+          //   style: const TextStyle(
+          //     fontSize: 12,
+          //     color: Colors.white,
+          //   ),
+          //   maxLines: 1,
+          // ),
+          // const SizedBox(height: 8),
           SizedBox(
             height: 50,
             width: double.infinity,

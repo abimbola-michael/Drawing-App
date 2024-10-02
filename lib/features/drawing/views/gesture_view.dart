@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import '../models/text_data.dart';
 import '../widgets/drawing_painter.dart';
 
-class GestureView extends StatefulWidget {
+class TranslateRotateScaleView extends StatefulWidget {
   final List<DrawingData> drawingDatas;
   final void Function(int index) onStartGesture;
   final void Function(int index, DrawingData newDrawingData) onEndGesture;
   final void Function(int index) onTap;
 
-  const GestureView(
+  const TranslateRotateScaleView(
       {super.key,
       required this.drawingDatas,
       required this.onStartGesture,
@@ -21,10 +21,11 @@ class GestureView extends StatefulWidget {
       required this.onTap});
 
   @override
-  State<GestureView> createState() => _GestureViewState();
+  State<TranslateRotateScaleView> createState() =>
+      _TranslateRotateScaleViewState();
 }
 
-class _GestureViewState extends State<GestureView> {
+class _TranslateRotateScaleViewState extends State<TranslateRotateScaleView> {
   DrawingData? selectedDrawingData;
   int currentIndex = -1;
   double scale = 1.0; // Scale factor

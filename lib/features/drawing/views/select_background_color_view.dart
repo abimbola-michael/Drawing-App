@@ -1,3 +1,4 @@
+import 'package:drawingapp/features/drawing/widgets/drawing_picker.dart';
 import 'package:drawingapp/features/shared/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -62,8 +63,8 @@ class _SelectBackgroundColorViewState extends State<SelectBackgroundColorView> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: DrawingPicker(
+              labels: const ["Background Color"],
               children: [
                 ColorPicker(
                   colorType: "Background",

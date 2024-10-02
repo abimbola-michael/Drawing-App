@@ -1,5 +1,5 @@
 import 'package:drawingapp/features/drawing/widgets/dialog_button.dart';
-import 'package:drawingapp/features/home/models/drawing.dart';
+import 'package:drawingapp/features/drawing/models/drawing.dart';
 import 'package:drawingapp/features/home/providers/drawing_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
